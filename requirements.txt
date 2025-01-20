@@ -1,0 +1,12 @@
+numpy
+pandas
+scipy
+statsmodels
+matplotlib
+seaborn
+plotly
+scikit-learn
+gunicorn
+fancyimpute
+python-aqi
+holidays

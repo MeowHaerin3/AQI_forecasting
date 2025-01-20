@@ -1,0 +1,25 @@
+[project]
+name = "aqi-forecasting"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fancyimpute>=0.7.0",
+    "gunicorn>=23.0.0",
+    "holidays>=0.64",
+    "ipykernel>=6.29.5",
+    "matplotlib>=3.10.0",
+    "missingno>=0.5.2",
+    "numpy==1.26.4",
+    "pandas>=2.2.3",
+    "plotly>=5.24.1",
+    "pmdarima>=2.0.4",
+    "python-aqi>=0.6.1",
+    "python-dotenv>=1.0.1",
+    "scikit-learn>=1.6.1",
+    "scipy>=1.15.1",
+    "seaborn>=0.13.2",
+    "statsforecast>=2.0.0",
+    "statsmodels>=0.14.4",
+]
