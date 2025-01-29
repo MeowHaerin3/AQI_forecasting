@@ -1,16 +1,20 @@
 import pandas as pd
 import numpy as np
 import aqi
-from fancyimpute import SimpleFill, KNN, IterativeImputer
+from fancyimpute import KNN
 from statsmodels.tsa.stattools import adfuller
-import statsmodels.api as sm
+from statsmodels.graphics.tsaplots import plot_acf
 from sklearn.metrics import mean_squared_error
 from math import sqrt
-import itertools
-from statsmodels.tsa.holtwinters import SimpleExpSmoothing
+from statsforecast import StatsForecast
+from statsforecast.models import AutoARIMA
+import matplotlib.pyplot as plt
 import warnings
+import logging
 
 warnings.filterwarnings('ignore')
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class ARIMAForecaster:
     def __init__(self, data_path):
@@ -33,6 +37,20 @@ class ARIMAForecaster:
                 df[col] = pd.to_numeric(df[col], errors='coerce')
         df = df.sort_values('date').reset_index(drop=True)
         return df
+    
+    def impute_missing_values(self, df):
+        # Separate the date column
+        date_col = df['date']
+        # Drop the date column for imputation
+        df_numeric = df.drop(columns=['date'])
+        
+        # Impute missing pollutant values
+        imputer = KNN(k=3)
+        df_imputed = pd.DataFrame(imputer.fit_transform(df_numeric), columns=df_numeric.columns)
+        
+        # Reattach the date column
+        df_imputed['date'] = date_col
+        return df_imputed
     
     def extract_aqi(self, df):
         aqi_list = []
@@ -68,6 +86,7 @@ class ARIMAForecaster:
 
     def preprocess_data(self):
         self.aqi_cleaned = self.cleaning_data(self.aqi_data)
+        self.aqi_cleaned = self.impute_missing_values(self.aqi_cleaned)
         self.aqi_cleaned = self.extract_aqi(self.aqi_cleaned)
         
         # Further cleaning and transformation
@@ -80,62 +99,91 @@ class ARIMAForecaster:
         # Reset index to access 'date' column again
         aqi_complete = aqi_complete.reset_index()
 
-        # Extracting year, month, and day
-        aqi_complete['Year'] = aqi_complete['date'].dt.year
-        aqi_complete['Month'] = aqi_complete['date'].dt.month
-        aqi_complete['Day'] = aqi_complete['date'].dt.day
+        # Feature engineering
+        aqi_complete = self.add_features(aqi_complete)
         return aqi_complete
 
+    def add_features(self, df):
+        # Lagged AQI (1-day lag)
+        df['aqi_lag1'] = df['bangkok_aqi'].shift(1)
+        # 7-day rolling average
+        df['aqi_rolling7'] = df['bangkok_aqi'].rolling(7).mean().fillna(method='bfill')
+        # Weekend flag
+        df['is_weekend'] = df['date'].dt.weekday >= 5
+        return df.dropna()
 
     def adf_test(self, data_cleaned):
         adf_res = adfuller(data_cleaned, autolag='AIC')
         print('p-Values:', adf_res[1])
 
     def fit_arima_model(self, data):
-        # ARIMA model order selection
-        p = range(1, 2)
-        d = range(1, 2)
-        q = range(0, 4)
-        pdq = list(itertools.product(p, d, q))
-        print(pdq)
+        # Prepare data for StatsForecast
+        data_sf = data[['date', 'bangkok_aqi']].rename(columns={'date': 'ds', 'bangkok_aqi': 'y'})
+        data_sf['unique_id'] = 1  # Add unique_id column
+        
+        # Initialize StatsForecast with AutoARIMA
+        sf = StatsForecast(
+            models=[AutoARIMA(season_length=7)],  # Weekly seasonality
+            freq='D'
+        )
+        
+        # Fit the model
+        sf.fit(data_sf)
+        return sf
 
-        # Fitting ARIMA model
-        aic = []
-        for param in pdq:
-            try:
-                model = sm.tsa.arima.ARIMA(data['bangkok_aqi'].dropna(), order=param)
-                results = model.fit()
-                print('Order = {}'.format(param))
-                print('AIC = {}'.format(results.aic))
-                a = 'Order: '+str(param) +' AIC: ' + str(results.aic)
-                aic.append(a)
-            except:
-                continue
-
-        # Fit ARIMA model with selected order
-        best_order = pdq[0]  # Select the best order from the printed list
-        model = sm.tsa.arima.ARIMA(data['bangkok_aqi'], order=best_order)
-        results = model.fit()
-        print(results.summary())
-        return results
-
-    def generate_forecast(self, results, data_2025):
+    def generate_forecast(self, sf, data_2025):
         # Forecast the next 30 days
-        forecast = results.get_forecast(steps=30)
+        forecast = sf.predict(h=30)
         forecast_dates = pd.date_range(start=data_2025['date'].max() + pd.Timedelta(days=1), periods=30)
-        forecast_values = forecast.predicted_mean
-        forecast_std_errors = forecast.se_mean
-        exact_forecast_values = np.random.normal(loc=forecast_values, scale=forecast_std_errors)
-        conf_int = forecast.conf_int(alpha=0.05)
-
+        
         # Forecasted DataFrame
         self.forecast_df = pd.DataFrame({
             'date': forecast_dates,
-            'forecasted_aqi': exact_forecast_values,
-            'lower_bound': conf_int.iloc[:, 0],
-            'upper_bound': conf_int.iloc[:, 1]
+            'forecasted_aqi': forecast['AutoARIMA']
         })
         return self.forecast_df
+
+    def analyze_residuals(self, sf, data):
+        # Use cross-validation with a larger step size
+        step_size = 14  # Increase step size to reduce the number of folds
+        residuals = []
+        for i in range(30, len(data), step_size):
+            train = data.iloc[:i]
+            test = data.iloc[i:i+step_size]
+            
+            # Prepare training data
+            train_sf = train[['date', 'bangkok_aqi']].rename(columns={'date': 'ds', 'bangkok_aqi': 'y'})
+            train_sf['unique_id'] = 1
+            
+            # Fit model on training data
+            sf.fit(train_sf)
+            
+            # Forecast one step ahead
+            forecast = sf.predict(h=step_size)
+            residuals.extend(test['bangkok_aqi'].values - forecast['AutoARIMA'].values)
+        
+        # Plot residuals
+        plt.figure(figsize=(12, 4))
+        plt.plot(residuals)
+        plt.title('Residuals Plot')
+        plt.show()
+        
+        # ACF of residuals
+        plot_acf(residuals, lags=20)
+        plt.show()
+
+    def validate_model(self, data):
+        # Split data into train/test
+        train = data[:-30]
+        test = data[-30:]
+        
+        # Fit model on training data
+        sf = self.fit_arima_model(train)
+        
+        # Forecast and evaluate
+        forecast = sf.predict(h=30)
+        rmse = sqrt(mean_squared_error(test['bangkok_aqi'], forecast['AutoARIMA']))
+        print(f'RMSE: {rmse:.2f}')
 
     def run_forecast(self):
         # Step 1: Preprocess the data
@@ -145,12 +193,18 @@ class ARIMAForecaster:
         data_cleaned = data['bangkok_aqi'].dropna()
         self.adf_test(data_cleaned)
         
-        # Step 3: Fit the ARIMA model
-        results = self.fit_arima_model(data)
+        # Step 3: Validate model performance
+        self.validate_model(data)
         
-        # Step 4: Forecast for 2025
+        # Step 4: Fit the final model
+        sf = self.fit_arima_model(data)
+        
+        # Step 5: Analyze residuals
+        self.analyze_residuals(sf, data)
+        
+        # Step 6: Forecast for 2025
         data_2025 = data[data['Year'] == 2025].reset_index()
-        forecast_df = self.generate_forecast(results, data_2025)
+        forecast_df = self.generate_forecast(sf, data_2025)
         
         return forecast_df
 
@@ -159,5 +213,3 @@ data_path = r"D:\AQI_forecasting\backend\data\bangkok-air-quality.csv"
 arima_forecaster = ARIMAForecaster(data_path)
 forecast_df = arima_forecaster.run_forecast()
 print(forecast_df)
-
-
