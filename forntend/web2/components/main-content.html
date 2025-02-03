@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="header">
+        <h1 style="color: #2c3e50;">Air Quality Forecast</h1>
+        <p style="color: #4f4f4f;">Real-time AQI monitoring and 7-day forecast</p>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+        <div class="info-card">
+            <h3>Current</h3>
+            <h4>PM2.5 level</h2>
+            <p>Current air quality is good. Perfect for outdoor activities!</p>
+            <div class="recommendations">
+                <p>✔️ Open windows for ventilation</p>
+                <p>✔️ Safe for sensitive groups</p>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h3>Pollutant Levels</h3>
+            <div class="pollutant-list">
+                <div>
+                    <span>PM2.5</span>
+                    <span>12 μg/m³</span>
+                </div>
+                <div>
+                    <span>PM10</span>
+                    <span>24 μg/m³</span>
+                </div>
+                <div>
+                    <span>O₃</span>
+                    <span>45 μg/m³</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-container">
+        <canvas id="aqiChart"></canvas>
+    </div>
+
+    <!-- Forecast -->
+    <h2 style="color: #2c3e50; margin-bottom: 1rem;">7-Day Forecast</h2>
+    <div class="forecast-grid" id="forecast"></div>
+</div>
+</main>

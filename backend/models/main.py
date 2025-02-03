@@ -1,7 +1,8 @@
 import pandas as pd
 from data_preprocessing import load_and_clean_data
 from modeling import (fit_sarima_model, train_lstm_model, hybrid_prediction,
-                      evaluate_model, plot_results, plot_2025_actual, plot_7_days_forecast)
+                      evaluate_model, plot_results, plot_2025_actual, plot_7_days_forecast
+                      ,predict_full_dataset,predict_2025, plot_2025_comparison)
 
 # File path to your CSV data file
 data_path = r"D:\AQI_forecasting\backend\data\bangkok-air-quality.csv"
@@ -27,7 +28,7 @@ print(f"RMSE: {rmse:.2f}")
 # --- Additional Plots ---
 
 # Plot Actual Data for 2025 only
-plot_2025_actual(aqi_df)
+# plot_2025_actual(aqi_df)
 
 # 6. Forecasting future AQI (7 days forecast after the last available date)
 forecast_steps = 7  # Forecast for 7 days
@@ -56,4 +57,16 @@ if forecast_values.empty or not isinstance(forecast_values.index, pd.DatetimeInd
     forecast_values.index = forecast_dates
 
 # Plot the 7-Day Forecast only
-plot_7_days_forecast(forecast_values)
+# plot_7_days_forecast(forecast_values)
+
+# Get full dataset predictions using the hybrid model
+full_hybrid_pred = predict_full_dataset(aqi_df)
+
+# Plot the results
+# plot_results(aqi_df, sarima_pred, full_hybrid_pred)
+
+# Get 2025 predictions
+hybrid_pred_2025 = predict_2025(aqi_df)
+
+# Plot 2025 actual vs predicted
+plot_2025_comparison(aqi_df, hybrid_pred_2025)

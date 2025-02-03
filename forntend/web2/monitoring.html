@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Page</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+        </nav>
+    
+        <section class="monitoring">
+            <h2>Real-Time Data</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sensor</th>
+                        <th>PM2.5</th>
+                        <th>PM10</th>
+                        <th>CO</th>
+                        <th>NO2</th>
+                        <th>SO2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sensor 1</td>
+                        <td>30 µg/m³</td>
+                        <td>50 µg/m³</td>
+                        <td>0.3 ppm</td>
+                        <td>0.02 ppm</td>
+                        <td>0.03 ppm</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Live Graphs</h3>
+            <img src="live-graph.png" alt="Live AQI Graph">
+            <div class="alerts">
+                <p class="alert">Warning: AQI exceeds safe levels!</p>
+            </div>
+        </section>
+    
+        <footer>
+            <p>Project Details | GitHub Repo | Credits</p>
+        </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

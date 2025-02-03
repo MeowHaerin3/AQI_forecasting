@@ -18,6 +18,7 @@ dependencies = [
     "pandas>=2.2.3",
     "plotly>=5.24.1",
     "pmdarima>=2.0.4",
+    "prophet>=1.1.6",
     "python-aqi>=0.6.1",
     "python-dotenv>=1.0.1",
     "requests>=2.32.3",
@@ -28,4 +29,5 @@ dependencies = [
     "statsmodels>=0.14.4",
     "tensorflow>=2.18.0",
     "uvicorn>=0.34.0",
+    "xgboost>=2.1.3",
 ]
