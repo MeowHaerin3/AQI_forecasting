@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tanawat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="snowflakes" aria-hidden="true">
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+        <div class="container">
+ 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="home-section">
+        <div class="home-overlay"></div>
+        <div class="container-fluid h-100 d-flex justify-content-center align-items-center">
+            <div class="row w-100 text-center">
+                <div class="col-md-12 home-content">
+                    <h1 class="mb-5">Hi!, I'm <span class="text-light">"Jeno"</span></h1><hr>
+                    
+                        <p>come with a modest desire to make everything easier. enjoy doing simple routines(eat, sleep, play valorant) and like to listen to Mozart to clear my mind.
+                    </p>
+                    <div class="d-flex justify-content-center">
+                        <a href="#experience" class="btn btn-outline-light btn-lg me-3">Discover My Projects</a>
+                        <a href="#about" class="btn btn-light btn-lg">Know More About Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+
+    <section id="about" class="about-section py-5 text-center" >
+        <div class="container">
+            <h2 class="text-primary mb-4">About Me</h2>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-4 text-center mb-4 mb-lg-0">
+                    <img src="../assets/images/tsoontho/tsoontho_prf3.jpg" class="img-fluid rounded-circle shadow-lg" alt="Profile Picture">
+                </div>
+    
+                <div class="col-lg-8 text-center text-lg-start text-light">
+                    
+                    <p class="lead">Turning complex problems into efficient, automated solutions. I'm a Developer & Data Engineer, passionate about creating smarter systems.</p>
+    
+                    <p>With a background in Python, Data Engineering, and Web Development, I focus on building tools that empower businesses to automate workflows and extract actionable insights from data.</p>
+    
+                    <p>From AI to IoT and cloud technologies, I embrace innovation to drive performance and scale. Whether it's crafting data pipelines or optimizing decision-making processes, I’m dedicated to continuous growth and delivering impactful results.</p>
+    
+                    <h5 class="text-primary mt-4">Skills & Expertise</h5>
+                    <div class="skills-icons d-flex justify-content-center">
+                        <div class="mx-3">
+                            <h6>Web Development</h6>
+                            <div class="d-flex justify-content-center">
+                                <i class="bx bxl-html5 fs-2 mx-2"></i>
+                                <i class="bx bxl-css3 fs-2 mx-2"></i>
+                                <i class="bx bxl-javascript fs-2 mx-2"></i>
+                                <i class='bx bxl-bootstrap fs-2 mx-2'></i>
+                                <i class='bx bxl-figma fs-2 ms-2' ></i>
+                            </div>
+                        </div>
+
+                        <div class="mx-3">
+                            <h6>Data Engineer Tool</h6>
+                            <div class="d-flex justify-content-center">
+                                <i class="bx bxl-python fs-2 mx-2"></i>
+                                <i class='bx bxl-postgresql fs-2 mx-2'></i>
+                                <i class='bx bxl-docker fs-2 mx-2'></i>
+                                <i class='bx bxl-flask fs-2 mx-2'></i>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>      
+     
+
+    <div id="experience" class="section py-5 text-center">
+        <div class="container">
+            <div class="row g-3">
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Database System Improvement Using Automated Database Management</h5>
+                            <p class="card-text text-dark">
+                                Work with Excel data related to terminal marshaling, cabinet positions, and other similar data,
+                                automating the process with Python. This allows for easier data retrieval, visualization, and more efficient management.
+                            </p>
+                            
+                            <img src="../assets/images/tsoontho/tsoontho_prj1.jpg" class="d-block w-100 project-img" alt="Project 1 Image">
+                            <button class="btn btn-primary view-more" data-project="Project 1 details: This project is about...">View More</button>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">AQI Forecasting (Stats model + Machine Learning)</h5>
+                            <p class="card-text text-dark">
+                                Forecasting air quality index with arima model and integrate with lstm machine learning model to improve prediction more efficiently.
+                            </p>
+                            
+                            <img src="../assets/images/tsoontho/tsoontho_prj3.webp" class="d-block w-100 project-img" alt="Project 2 Image">
+                            <button class="btn btn-primary view-more" data-project="Project 2 details: This project is about...">View More</button>
+                        </div>
+                    </div>
+                </div>
+                
+               
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">ABB Robot Contest 2024</h5>
+                            <p class="card-text text-dark">
+                                Control system with robot arm to increase production and efficiency. Automate the production line to reduce time.
+                            </p>
+                            
+                            <img src="../assets/images/tsoontho/tsoontho_prj2.jpg" class="d-block w-100 project-img" alt="Project 3 Image">
+                            <button class="btn btn-primary view-more" data-project="Project 3 details: This project is about...">View More</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="contact" class="section text-white py-4">
+        <div class="container">
+            <h2 class="text-center mb-3">Contact</h2>
+            <p class="text-center mb-3">Tel: 091-065-9913</p>
+    
+            <div class="social-links d-flex justify-content-center">
+                <a href="https://www.facebook.com/tanawat.soonthorn.3/" target="_blank" class="social-icon me-2">
+                    <i class="bx bxl-facebook fs-5 text-white"></i>
+                </a>
+                <a href="https://www.instagram.com/j_no.cxx/" target="_blank" class="social-icon me-2">
+                    <i class="bx bxl-instagram fs-5 text-white"></i>
+                </a>
+                <a href="https://github.com/MeowHaerin3" target="_blank" class="social-icon me-2">
+                    <i class="bx bxl-github fs-5 text-white"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/tanawat-soonthorn-5b69052a7/" target="_blank" class="social-icon me-2">
+                    <i class="bx bxl-linkedin fs-5 text-white"></i>
+                </a>
+                <a href="https://discord.com/users/345545136320675841" target="_blank" class="social-icon me-2">
+                    <i class="bx bxl-discord-alt fs-5 text-white"></i>
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&to=tanawat14795@gmail.com" target="_blank" class="social-icon me-2">
+                    <i class="bx bxl-gmail fs-5 text-white"></i>
+                </a>
+            </div>
+        </div>
+    </div>    
+    
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
