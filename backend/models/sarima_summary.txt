@@ -3,7 +3,7 @@
 Dep. Variable:                                  aqi   No. Observations:                 4011
 Model:             SARIMAX(0, 0, 2)x(0, 1, [1], 12)   Log Likelihood              -18160.270
 Date:                              Tue, 18 Feb 2025   AIC                          36328.540
-Time:                                      12:53:21   BIC                          36353.715
+Time:                                      13:13:26   BIC                          36353.715
 Sample:                                           0   HQIC                         36337.464
                                              - 4011                                         
 Covariance Type:                                opg                                         
