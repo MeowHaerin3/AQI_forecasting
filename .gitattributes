@@ -1,1 +1,2 @@
+sarima_model.pkl filter=lfs diff=lfs merge=lfs -text
 backend/models/sarima_model.pkl filter=lfs diff=lfs merge=lfs -text
